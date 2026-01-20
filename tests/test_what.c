@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <assert.h>
-#include "what.h"
+#include <what.h>
 
 int main()
 {
