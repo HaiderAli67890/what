@@ -1,3 +1,4 @@
+#include <string.h>
 #include "what.h"
 
 int __encode_url(char *dest, size_t dest_size, const char *src)
@@ -29,21 +30,28 @@ int __encode_url(char *dest, size_t dest_size, const char *src)
     return 0;
 }
 
-int what_message(const char number[], const char message[])
+int what_message(const char *number, const char *message)
 {
-    char encodedMessage[256];
-    char encodedNumber[64];
-    char url[512];
-    char command[700];
+    size_t messageLength = strlen(message) * 3 + 1;
+    size_t numberLength = strlen(number) * 3 + 1;
 
-    if (__encode_url(encodedMessage, sizeof(encodedMessage), message) != 0)
+    char *encodedMessage = malloc(messageLength);
+    char *encodedNumber = malloc(numberLength);
+    char url[1024];
+
+    if (!encodedMessage || !encodedNumber)
     {
-        printf("Failed to encode message buffer too small.\n");
+        free(encodedMessage);
+        free(encodedNumber);
+        return -1;
     }
 
-    if (__encode_url(encodedNumber, sizeof(encodedNumber), number) != 0)
+    if (__encode_url(encodedMessage, messageLength, message) != 0 ||
+        __encode_url(encodedNumber, numberLength, number) != 0)
     {
-        printf("Failed to encode number buffer too small.\n");
+        free(encodedMessage);
+        free(encodedNumber);
+        return -1;
     }
 
     snprintf(
@@ -53,31 +61,30 @@ int what_message(const char number[], const char message[])
         encodedNumber,
         encodedMessage);
 
-#ifdef _WIN32
-    ShellExecute(0, "open", url, 0, 0, SW_SHOWNORMAL);
+    free(encodedMessage);
+    free(encodedNumber);
 
+#ifdef _WIN32
+    ShellExecuteA(NULL, "open", url, NULL, NULL, SW_SHOWNORMAL);
     Sleep(5000);
 
-    INPUT ip;
-    ip.type = INPUT_KEYBOARD;
-    ip.ki.wVk = VK_RETURN;
-    ip.ki.wScan = 0;
-    ip.ki.dwFlags = 0;
-    ip.ki.time = 0;
-    ip.ki.dwExtraInfo = 0;
-    SendInput(1, &ip, sizeof(INPUT));
+    INPUT inputs[2] = {0};
+    inputs[0].type = INPUT_KEYBOARD;
+    inputs[0].ki.wVk = VK_RETURN;
 
-    ip.ki.dwFlags = KEYEVENTF_KEYUP;
-    SendInput(1, &ip, sizeof(INPUT));
+    inputs[1] = inputs[0];
+    inputs[1].ki.dwFlags = KEYEVENTF_KEYUP;
+
+    SendInput(2, inputs, sizeof(INPUT));
 
 #elif __APPLE__
-    snprintf(command, sizeof(command), "open %s");
+    char command[1100];
+    snprintf(command, sizeof(command), "open \"%s\"", url);
     system(command);
 #elif __linux__
-    snprintf(command, sizeof(command), "xdg-open %s");
+    char command[1100];
+    snprintf(command, sizeof(command), "xdg-open \"%s\"", url);
     system(command);
-#else
-    printf("What the hell are you using!?");
 #endif
 
     return 0;
